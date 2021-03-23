@@ -2,7 +2,7 @@ package sqlstore
 
 import (
 	"database/sql"
-	"go-rest-api-template/internal/app/store"
+	"go-rest-api-template/app/store"
 )
 
 // Store ...

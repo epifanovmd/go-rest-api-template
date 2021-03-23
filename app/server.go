@@ -1,15 +1,16 @@
-package apiserver
+package app
 
 import (
 	"database/sql"
 	"github.com/gorilla/sessions"
 	_ "github.com/lib/pq" // ...
-	"go-rest-api-template/internal/app/store/sqlstore"
+	"go-rest-api-template/app/config"
+	"go-rest-api-template/app/store/sqlstore"
 	"net/http"
 )
 
 // Start ...
-func Start(config *Config) error {
+func (a *App) Start(config *config.Config) error {
 	db, err := newDB(config.DatabaseURL)
 	if err != nil {
 		return err
@@ -18,7 +19,7 @@ func Start(config *Config) error {
 	defer db.Close()
 	store := sqlstore.New(db)
 	sessionStore := sessions.NewCookieStore([]byte(config.SessionKey))
-	srv := newServer(store, sessionStore)
+	srv := a.Initialize(store, sessionStore)
 
 	return http.ListenAndServe(config.BindAddr, srv)
 }
@@ -34,4 +35,14 @@ func newDB(dbURL string) (*sql.DB, error) {
 	}
 
 	return db, nil
+}
+
+type responseWriter struct {
+	http.ResponseWriter
+	code int
+}
+
+func (w *responseWriter) WriteHeader(statusCode int) {
+	w.code = statusCode
+	w.ResponseWriter.WriteHeader(statusCode)
 }

@@ -1,6 +1,6 @@
 package store
 
-import "go-rest-api-template/internal/app/model"
+import "go-rest-api-template/app/model"
 
 // UserRepository ...
 type UserRepository interface {

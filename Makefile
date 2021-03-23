@@ -10,4 +10,4 @@ test:
 
 .PHONY: run
 run:
-    gin -d ./cmd/apiserver -i --all -b "go-rest-api"
+    gin -i --all -b "go-rest-api"
